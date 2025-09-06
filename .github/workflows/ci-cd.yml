@@ -39,8 +39,8 @@ jobs:
           cd /home/esp8266_server
           echo '📦 Installing dependencies...'
           /root/.nvm/versions/node/v20.10.0/bin/npm install
-          echo '🔄 Restarting PM2 process esp_serve...'
-          /root/.nvm/versions/node/v20.10.0/bin/pm2 restart esp_serve --update-env
-          echo '✅ PM2 process esp_serve restarted successfully'
+          echo '🔄 Restarting PM2 process esp_serv...'
+          /root/.nvm/versions/node/v20.10.0/bin/pm2 restart esp_serv --update-env
+          echo '✅ PM2 process esp_serv restarted successfully'
           /root/.nvm/versions/node/v20.10.0/bin/pm2 save
         "
