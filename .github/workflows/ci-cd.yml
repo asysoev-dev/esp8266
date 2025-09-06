@@ -1,0 +1,52 @@
+name: Deploy to ESP8266 Server
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+        chmod 600 ~/.ssh/deploy_key
+        ssh-keyscan -H 5.188.200.187 >> ~/.ssh/known_hosts
+
+    - name: Copy files to server
+      run: |
+        rsync -avz --delete \
+        -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+        --exclude='.git/' \
+        --exclude='.github/' \
+        --exclude='node_modules/' \
+        --exclude='.env' \
+        ./ root@5.188.200.187:/home/esp8266_server/
+
+    - name: Install dependencies and restart PM2
+      run: |
+        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no root@5.188.200.187 "
+          cd /home/esp8266_server
+          echo '📦 Installing dependencies...'
+          npm install --production
+          echo '🔄 Restarting PM2 process esp_serve...'
+          pm2 restart esp_serve --update-env
+          echo '✅ PM2 process esp_serve restarted successfully'
+          pm2 save
+        "
+
+    - name: Verify deployment
+      run: |
+        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no root@5.188.200.187 "
+          echo '📋 PM2 status:'
+          pm2 status
+          echo ''
+          echo '📜 Last logs esp_serve:'
+          pm2 logs esp_serve --lines 5 --nostream
+        "
