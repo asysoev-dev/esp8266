@@ -32,21 +32,15 @@ jobs:
     - name: Install dependencies and restart PM2
       run: |
         ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no root@5.188.200.187 "
+          # Загружаем nvm environment
+          export NVM_DIR=\"$HOME/.nvm\"
+          [ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\"
+
           cd /home/esp8266_server
           echo '📦 Installing dependencies...'
-          npm install --production
+          /root/.nvm/versions/node/v20.10.0/bin/npm install
           echo '🔄 Restarting PM2 process esp_serve...'
-          pm2 restart esp_serve --update-env
+          /root/.nvm/versions/node/v20.10.0/bin/pm2 restart esp_serve --update-env
           echo '✅ PM2 process esp_serve restarted successfully'
-          pm2 save
-        "
-
-    - name: Verify deployment
-      run: |
-        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no root@5.188.200.187 "
-          echo '📋 PM2 status:'
-          pm2 status
-          echo ''
-          echo '📜 Last logs esp_serve:'
-          pm2 logs esp_serve --lines 5 --nostream
+          /root/.nvm/versions/node/v20.10.0/bin/pm2 save
         "
