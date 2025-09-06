@@ -7,7 +7,8 @@ const {
     handleCheckSensors, 
     handleRelayControls, 
     handleServiceCommands, 
-    handleCloseCommand 
+    handleCloseCommand,
+    calculatorKeyboard 
 } = require('./handlers/messageHandlers');
 
 class Bot {
