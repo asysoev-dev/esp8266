@@ -135,7 +135,7 @@ bot.on("message", async msg => {
         // bot.sendMessage(chatId, "Введи PIN код", {
         //     reply_markup: calculatorKeyboard
         // });
-        bot.sendMessage(chatId, `Температура: ${Math.floor(currentSensorsData?.temperature)}C° 🌡\nВлажность!!!: ${Math.floor(currentSensorsData?.humidity)}% 💧`);
+        bot.sendMessage(chatId, `Температура: ${Math.floor(currentSensorsData?.temperature)}C° 🌡\nВлажность: ${Math.floor(currentSensorsData?.humidity)}% 💧`);
     }
     if (text === "Свет") {
         socketIo.emit('relay_one');
