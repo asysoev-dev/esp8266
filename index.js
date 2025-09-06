@@ -184,7 +184,7 @@ const socketIo = io.on("connection", (socket) => {
     if (!isSendDisconnectMessage && !isRestartModule) { //не было disconnect(а) и перезагрузки
         activeUsersId.forEach((userId) => {
             bot.sendSticker(userId, "CAACAgIAAxkBAAIG7WcpVM7PlckHAVSETRPH3-NtOwQlAAISNQACx6ehSqkeK7OWc836NgQ").then(() => {
-                bot.sendMessage(userId, "Связь с модулем установлена!!!!!!");
+                bot.sendMessage(userId, "Связь с модулем установлена!!!!!! ))))");
             });
         });
     } else {
